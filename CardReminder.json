@@ -1,0 +1,14 @@
+{
+  "id": "CardReminder",
+  "name": "队友手牌与Debuff提醒",
+  "author": "CardReminder",
+  "description": "在多人玩家列表右侧显示队友金币（数值过渡）与药水（1秒平滑落入槽位），在队友右侧按手牌顺序显示完整手牌并高亮Debuff卡牌（右上角显示Debuff图标，支持原位3倍悬浮放大），打出卡牌时提醒队友持有的易伤/虚弱等Debuff卡牌。",
+  "version": "0.1.0",
+  "min_game_version": "0.113.1",
+  "has_pck": false,
+  "has_dll": true,
+  "affects_gameplay": false,
+  "dependencies": [
+    { "id": "STS2-RitsuLib", "min_version": "0.6.15" }
+  ]
+}

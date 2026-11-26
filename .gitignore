@@ -1,0 +1,26 @@
+# Godot / .NET build outputs
+.godot/
+bin/
+obj/
+dist/
+
+# Workshop staging & logs
+workshop/content/
+mod-uploader.log
+*.log
+
+# Local machine paths & secrets (never commit)
+build.local.ps1
+CardReminder.Local.props
+*.local.ps1
+*.Local.props
+.env
+.env.*
+
+# IDE / OS
+.vs/
+.idea/
+*.user
+*.suo
+.DS_Store
+Thumbs.db

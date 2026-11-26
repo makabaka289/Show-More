@@ -1,0 +1,59 @@
+<Project Sdk="Godot.NET.Sdk/4.5.1">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <AssemblyName>CardReminder</AssemblyName>
+    <Version>0.1.0</Version>
+    <RootNamespace>CardReminder</RootNamespace>
+    <LangVersion>13.0</LangVersion>
+    <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <EnableDynamicLoading>true</EnableDynamicLoading>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <Deterministic>true</Deterministic>
+    <PathMap>$(MSBuildProjectDirectory)=.</PathMap>
+  </PropertyGroup>
+
+  <Import Project="CardReminder.Local.props" Condition="Exists('CardReminder.Local.props')" />
+
+  <PropertyGroup>
+    <Sts2GameDir Condition="'$(Sts2GameDir)' == ''">$(STS2_GAME_DIR)</Sts2GameDir>
+    <Sts2DataDir Condition="'$(Sts2DataDir)' == '' And '$(Sts2GameDir)' != ''">$(Sts2GameDir)\data_sts2_windows_x86_64</Sts2DataDir>
+
+    <RitsuLibRoot Condition="'$(RitsuLibRoot)' == ''">$(RITSULIB_ROOT)</RitsuLibRoot>
+    <RitsuLibRoot Condition="'$(RitsuLibRoot)' == '' And '$(Sts2GameDir)' != '' And Exists('$(Sts2GameDir)\mods\STS2-RitsuLib\RitsuLib.References.props')">$(Sts2GameDir)\mods\STS2-RitsuLib</RitsuLibRoot>
+    <RitsuLibReferenceTarget Condition="'$(RitsuLibReferenceTarget)' == ''">0.113.0</RitsuLibReferenceTarget>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="CardReminder.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="bin/**/*.cs" />
+    <Compile Remove="obj/**/*.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="sts2">
+      <HintPath>$(Sts2DataDir)\sts2.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>$(Sts2DataDir)\0Harmony.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+  <Import Project="$(RitsuLibRoot)\RitsuLib.References.props"
+          Condition="'$(RitsuLibRoot)' != '' And Exists('$(RitsuLibRoot)\RitsuLib.References.props')" />
+
+  <Target Name="ValidateCardReminderDependencies" BeforeTargets="ResolveAssemblyReferences">
+    <Error Condition="'$(Sts2DataDir)' == '' Or !Exists('$(Sts2DataDir)\sts2.dll')"
+           Text="Cannot find sts2.dll. Pass -p:Sts2GameDir=&lt;Slay the Spire 2 install dir&gt; (current Sts2DataDir=$(Sts2DataDir))." />
+    <Error Condition="!Exists('$(Sts2DataDir)\0Harmony.dll')"
+           Text="Cannot find 0Harmony.dll (current Sts2DataDir=$(Sts2DataDir))." />
+    <Error Condition="'$(RitsuLibRoot)' == '' Or !Exists('$(RitsuLibRoot)\RitsuLib.References.props')"
+           Text="Cannot find RitsuLib.References.props. Pass -p:RitsuLibRoot=&lt;RitsuLib dir&gt;." />
+  </Target>
+</Project>
